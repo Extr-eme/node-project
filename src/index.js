@@ -1,7 +1,10 @@
-import express from "express"
-import 'dotenv/config'
-import userRouter from "./user.route.js"
-import bodyParser from "body-parser"
+import express from "express";
+import 'dotenv/config';
+import userRouter from "./user.route.js";
+import bodyParser from "body-parser";
+import {connectDb} from "./db/db.js";
+import { errorHandler } from "./libs/errorhandler.js";
+
 
 const app=express()
 const PORT=process.env.PORT
@@ -14,7 +17,9 @@ userRouter.get("/",(req,res)=>{
 });
 app.use("/api/users",userRouter)
 
+app.use(errorHandler)
 
 app.listen(PORT,()=>{
     console.log(`server running at ${PORT}`);
+    connectDb();
 })
