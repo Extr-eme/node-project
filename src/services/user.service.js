@@ -33,14 +33,16 @@ allUserService()
 
 
 export const WriteuserService=async(loginData)=>{
-    console.log(loginData)
-    await prisma.user.create({
-        data: {
-            fullName:loginData.name,
+    const createData={
+        fullName:loginData.name,
             email:loginData.email,
             password:loginData.password,
             gender:loginData.gender,
-            },
+
+    }
+    console.log(loginData)
+    await prisma.user.create({
+        data: createData,
     })
 
 const writeUser=await prisma.user.findMany({
