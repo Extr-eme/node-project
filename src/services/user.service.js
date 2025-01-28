@@ -1,7 +1,6 @@
 
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../db/db.js";
 
-const prisma=new PrismaClient()
 
 export const userLoginService=async (loginData)=>{
     console.log(loginData)
@@ -32,11 +31,11 @@ allUserService()
     process.exit(1)
 })
 
+
 export const WriteuserService=async(loginData)=>{
     console.log(loginData)
     await prisma.user.create({
         data: {
-            id:loginData.id,
             fullName:loginData.name,
             email:loginData.email,
             password:loginData.password,
