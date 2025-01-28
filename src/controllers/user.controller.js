@@ -1,7 +1,7 @@
 
 import { userLoginService ,allUserService,WriteuserService} from "../services/user.service.js";
 
-export const userLoginController=async(req,res)=>{
+export const userLoginController=async(req,res,next)=>{
     console.log(req);
     try{
     const data=await userLoginService(req.body);
@@ -12,7 +12,7 @@ export const userLoginController=async(req,res)=>{
     }
 }
 
-export const allUserController=async(req,res)=>{
+export const allUserController=async(req,res,next)=>{
     console.log(req);
     try{
     const data=await allUserService(req.body);
@@ -23,7 +23,7 @@ export const allUserController=async(req,res)=>{
     }
 }
 
-export const writeUser=async(req,res)=>{
+export const writeUser=async(req,res,next)=>{
     console.log(req)
     try{
         const data=await WriteuserService(req.body);
