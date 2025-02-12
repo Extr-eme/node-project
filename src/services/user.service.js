@@ -1,10 +1,10 @@
 
 import { error } from "console";
 import { prisma } from "../db/db.js";
-import { checkPassword, generateHashForPass } from "../libs/passwordutility.js";
+import { checkPassword, generateHashforPassword } from "../libs/passwordutility.js";
 import { register } from "module";
 import { truncate } from "fs/promises";
-import { genetateJwtToken } from "../libs/jwt_utils.js";
+import { generateJwtToken } from "../libs/jwt_utils.js";
 
 
 export const userLoginService=async (loginData)=>{
@@ -21,7 +21,7 @@ export const userLoginService=async (loginData)=>{
             throw new Error("invalid creds",{cause:"invalid password"})
         }
         else{
-            const token=genetateJwtToken(user.id);
+            const token=generateJwtToken(user.id);
             delete user.password
             return {message:"login success",user,token};
         }
@@ -48,25 +48,23 @@ allUserService()
 
 
 export const WriteuserService=async(loginData)=>{
-    const hashedPassword= await generateHashForPass(
-        loginData.password
-    )
+    const hashedPassword= await generateJwtToken(loginData.password)
   try{  const createData={
-        fullName:loginData.name,
+            fullName:loginData.fullName,
             email:loginData.email,
             password:hashedPassword,
             gender:loginData.gender,
 
     }
     console.log(loginData)
-   const res= await prisma.user.create({
+   const user= await prisma.user.create({
         data: createData,
         omit:{
             password:true
         }
     })
-    const token=genetateJwtToken(res.id);
-    return {message:"registration success",res,token};
+    const token=generateJwtToken(user.id);
+    return {message:"registration success",user,token};
 
 
 const WriteuserService=await prisma.user.findMany({
@@ -80,3 +78,15 @@ console.dir(WriteuserService,{depth:null})
 }
 }
 
+export const userProfileservice=async(userId)=>{
+    const user=await prisma.user.findUnique({
+        where:{
+            id:userId
+        }},
+        {omit:{
+            password:true
+        }
+    })
+    return user
+
+}
